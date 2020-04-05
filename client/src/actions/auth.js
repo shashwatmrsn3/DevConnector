@@ -80,4 +80,5 @@ export const logout = () => async dispatch =>{
     dispatch({
         type:'LOGOUT'
     });
+    dispatch({type:'CLEAR_PROFILE'})
 }
