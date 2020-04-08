@@ -21,6 +21,49 @@ export const getCurrentProfile = () => async dispatch => {
     }
 } 
 
+export const getAllProfiles = () => async dispatch => {
+    console.log('get all profiles');
+    dispatch({type:'CLEAR_PROFILE'});
+    try {
+        const res = await axios.get('api/profile');
+        dispatch({
+            type:'GET_PROFILES',
+            payload:res.data
+        });
+    } catch (error) {
+        dispatch(
+            {
+                type:'PROFILE_ERROR',
+                payload:{
+                    msg:error.response.statusText,
+                    status:error.response.status
+                }
+            }
+        );
+    }
+} 
+
+export const getProfileById = (userID) => async dispatch => {
+    console.log('action');
+    try {
+        const res = await axios.get(`/api/profile/user/${userID}`);
+        dispatch({
+            type:'GET_PROFILE',
+            payload:res.data
+        });
+    } catch (error) {
+        dispatch(
+            {
+                type:'PROFILE_ERROR',
+                payload:{
+                    msg:error.response.statusText,
+                    status:error.response.status
+                }
+            }
+        );
+    }
+} 
+
 export const createProfile = (formData,history,edit=false) => async dispatch => {
     try {
         const config = {

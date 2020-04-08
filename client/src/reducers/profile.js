@@ -24,6 +24,12 @@ export default function(state = initialState,action) {
                 error:action.payload,
                 loading:false
             }
+        case 'GET_PROFILES':
+            return{
+                ...state,
+                profiles:action.payload,
+                loading:false
+            }
         case 'CLEAR_PROFILE':
             return {
                 ...state,
