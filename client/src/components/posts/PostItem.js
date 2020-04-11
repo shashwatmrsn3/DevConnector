@@ -1,10 +1,10 @@
-import React from 'react';
+import React,{Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import Moment from 'react-moment';
 import {connect} from 'react-redux';
 import {addLike,removeLike,deletePost} from '../../actions/post';
 
-const PostItem = ({auth,deletePost,addLike,removeLike,post:{_id,text,name,avatar,user,likes,comments,date}}) => {
+const PostItem = ({auth,deletePost,showActions,addLike,removeLike,post:{_id,text,name,avatar,user,likes,comments,date}}) => {
     return (
         <div className="post bg-white p-1 my-1" key={_id}>
           <div>
@@ -24,14 +24,16 @@ const PostItem = ({auth,deletePost,addLike,removeLike,post:{_id,text,name,avatar
              <p className="post-date">
                 Posted on <Moment format = 'YYY/MM/DD'>{date}</Moment>
             </p>
-            <button type="button" onClick={e=>addLike(_id)} className="btn btn-light">
+            {showActions && (
+                <Fragment>
+                  <button type="button" onClick={e=>addLike(_id)} className="btn btn-light">
               <i className="fas fa-thumbs-up"></i>
               <span>{likes.length}</span>
             </button>
             <button type="button" onClick = {e=>removeLike(_id)}className="btn btn-light">
               <i className="fas fa-thumbs-down"></i>
             </button>
-            <Link to={`/post/${_id}`} className="btn btn-primary">
+            <Link to={`/posts/${_id}`} className="btn btn-primary">
               Discussion <span className='comment-count'>{comments.length}</span>
             </Link>
             {!auth.loading && user === auth.user._id && (
@@ -42,6 +44,11 @@ const PostItem = ({auth,deletePost,addLike,removeLike,post:{_id,text,name,avatar
                 <i className="fas fa-times"></i>
               </button>
             )}
+                </Fragment>
+            )
+            }
+            
+            
             
           </div>
         </div>
@@ -49,6 +56,10 @@ const PostItem = ({auth,deletePost,addLike,removeLike,post:{_id,text,name,avatar
     );
     
   
+}
+
+PostItem.defaultProps={
+  showActions:true
 }
 
 const mapStateToProps = (state) => {
